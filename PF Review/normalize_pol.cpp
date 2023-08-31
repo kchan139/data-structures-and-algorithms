@@ -19,6 +19,7 @@ void normalizePolynomial(ptr & first)
         pairs[tmp->exp] += tmp->coef;
         tmp = tmp->next;
     }
+    
     // for (auto pair : pairs)
     //     cout << pair.first << " " << pair.second << endl;
 
