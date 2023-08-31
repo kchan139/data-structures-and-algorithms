@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unordered_map>
 using namespace std;
 
 typedef struct Item * ptr;
@@ -11,43 +12,81 @@ struct Item
 
 void normalizePolynomial(ptr & first)
 {
-    ptr curr = first;
-    ptr back = NULL;
-    ptr res  = NULL;
-    
-    while (curr != NULL) 
+    unordered_map<int, double> pairs;
+    ptr tmp = first;
+    while (tmp != nullptr)
     {
-        int sumE = curr -> exp;
-        if (sumE == 0) return;
-        int sumC = curr -> coef;
-        
-        ptr temp = curr -> next;
-    
-        while (temp != NULL && temp -> exp == sumE) {
-            sumC += temp -> coef;
-            ptr flag = temp;
-            temp = temp -> next;
-            free(flag);
-        }
-    
-        if (sumC == 0) {
-            if (back != NULL) back -> next = temp;
-            else first = temp;
-            free(curr);
-        }
-        else {
-            curr -> coef = sumC;
-            curr -> next = res;
-            res = curr;
-        }
-    
-        back = temp != NULL ? temp : back;
-        curr = temp;
+        pairs[tmp->exp] += tmp->coef;
+        tmp = tmp->next;
     }
-    first = res;
+    // for (auto pair : pairs)
+    //     cout << pair.first << " " << pair.second << endl;
+
+    tmp = nullptr;
+    for (auto pair : pairs)
+    {
+        if (pair.second)
+        {
+            ptr newNode = new Item;
+            newNode->coef = pair.second;
+            newNode->exp  = pair.first;
+            newNode->next = tmp;
+            tmp = newNode;
+        }
+    }
+    ptr trash = first;
+    first = tmp;
+
+    while (trash != nullptr)
+    {
+        ptr temp = trash;
+        trash = trash->next;
+        delete temp;
+    }
+}
+
+void insertItem(ptr& first, double coef, int exp) {
+    ptr newItem = new Item;
+    newItem->coef = coef;
+    newItem->exp = exp;
+    newItem->next = nullptr;
+
+    if (!first) {
+        first = newItem;
+        return;
+    }
+
+    ptr curr = first;
+    while (curr->next) {
+        curr = curr->next;
+    }
+    curr->next = newItem;
+}
+
+void printPolynomial(ptr first) {
+    ptr curr = first;
+    while (curr) {
+
+        cout << "(" << curr->coef << "," << curr->exp << ") ";
+        curr = curr->next;
+    }
+    cout << endl;
 }
 
 int main ()
 {
+    ptr polynomial = nullptr;
+    insertItem(polynomial, 2, 3);
+    insertItem(polynomial, 1, 4);
+    insertItem(polynomial, -2, 3);
+    insertItem(polynomial, 0, 0);
+
+    cout << "Original polynomial: ";
+    printPolynomial(polynomial);
+
+    cout << "Normalized polynomial: ";
+    normalizePolynomial(polynomial);
+    printPolynomial(polynomial);
+
     return 0;
 }
