@@ -25,23 +25,15 @@ class AList
             data[cursor] = v;
         }
 
-        void insertBefore (const T & v, const T & k)
+        void remove() 
         {
-            if (listSize == MAXSIZE)
-                throw out_of_range("out of range");
+            if (cursor >= listSize)
+                throw out_of_range("Cannot remove element");
+
+            for (int i = cursor; i < listSize - 1; i++)
+                data[i] = data[i + 1];
                 
-            for (int i = 0; i < listSize; i++) 
-            {
-                if (data[i] == k) 
-                {
-                    for (int j = listSize++; j > i; j--)
-                        data[j] = data[j - 1];
-                    
-                    data[i] = v;
-                    cursor = i;
-                    return;
-                }
-            }
+            listSize--;
         }
 };
 
@@ -54,7 +46,7 @@ int main ()
     arr.print();
 
     try 
-        { arr.insertBefore (0, 1); }
+        { arr.remove(); }
     catch (out_of_range)
         { cout << "out of range" << endl; }
     
