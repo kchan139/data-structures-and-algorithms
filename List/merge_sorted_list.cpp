@@ -39,46 +39,38 @@ class List
         virtual const E& getValue() const = 0;
 };
 
-template <typename E> 
-class Link 
+template <typename E>
+List<E> * merge(List<E> * in1, List<E> * in2)
 {
-    public:
-        E element;      // Value for this node
-        Link *next;        // Pointer to next node in list
-        // Constructors
-        Link (const E& elemval, Link* nextval =NULL)
-            { element = elemval;  next = nextval; }
-        Link (Link* nextval =NULL) { next = nextval; }
-};
+    List<E> * mergedList = new LList<E>();
+    in1->moveToStart(); 
+    in2->moveToStart();
 
-template <typename E> 
-class LList: public List<E> 
-{
-    Link<E> * head;
-    Link<E> * tail;
-    Link<E> * curr;
-    int cnt = 0;
-
-    public:
-        void insertBefore (const E & v, const E & k)
+    while (in1->currPos() < in1->length() && in2->currPos() < in2->length()) 
+    {
+        if (in1->getValue() < in2->getValue()) 
         {
-            if (curr->element == k)
-                curr = head;
-            else
-            {
-                Link<E> * tmp = head->next;
-                while (tmp && tmp->element != k) 
-                    tmp = tmp->next;
-    
-                if (!tmp) return;
-                
-                curr = head;
-                while (curr && curr->next != tmp)
-                    curr = curr->next;
-            }
-
-            Link<E> * newNode = new Link<E> (v, curr->next);
-            curr->next = newNode;
-            cnt++;
+            mergedList->append(in1->getValue());
+            in1->next();
+        } 
+        else 
+        {
+            mergedList->append(in2->getValue());
+            in2->next();
         }
-};
+    }
+
+    while (in1->currPos() < in1->length()) 
+    {
+        mergedList->append(in1->getValue());
+        in1->next();
+    }
+    
+    while (in2->currPos() < in2->length()) 
+    {
+        mergedList->append(in2->getValue());
+        in2->next();
+    }
+
+    return mergedList;
+}
