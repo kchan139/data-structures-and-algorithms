@@ -22,4 +22,4 @@ void bubbleSort (List<E> & L)
             }
         }
     }
-}
+};

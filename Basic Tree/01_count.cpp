@@ -7,4 +7,4 @@ int count(BNode<E> * root)
     int right = count(root->right());
  
     return 1 + left + right;
-}
+};
