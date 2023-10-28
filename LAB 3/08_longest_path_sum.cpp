@@ -1,23 +1,31 @@
-// STUDENT ANSWER BEGIN
-// You can define other functions here to help you.
-
-void BFS()
+void helper (BTNode * root, int sum, int len, int &maxLen, int &maxSum)
 {
-    if (!root) return;
-    
-    queue<Node *> q;
-    q.push (root);
-    
-    while (!q.empty())
+    if (!root)
     {
-        Node * current = q.front();
-        cout << current->value << " ";
-        q.pop();
-        
-        if (current->pLeft)
-            q.push (current->pLeft);
-        if (current->pRight)
-            q.push (current->pRight);
+        if (maxLen < len)
+        {
+            maxLen = len;
+            maxSum = sum;
+        }
+        else if (maxLen == len && maxSum < sum)
+            maxSum = sum;
+            
+        return;
     }
+    
+    
+    helper (root->left, sum + root->val, len + 1, maxLen, maxSum);
+    helper (root->right, sum + root->val, len + 1, maxLen, maxSum);
 }
-// STUDENT ANSWER END
+
+int longestPathSum (BTNode* root) 
+{
+    if (!root) return 0;
+    
+    int maxSum = INT32_MIN;
+    int maxLen = 0;
+    
+    helper (root, 0, 0, maxLen, maxSum);
+    
+    return maxSum;
+}
