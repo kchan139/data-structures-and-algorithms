@@ -19,7 +19,7 @@ bool jumpsearch(T arr[], int n, T k, int j)
         prev = i;
     }
     
-    if (arr[0] > k) return false;
+    if (arr[prev] > k) return false;
 
     for (int m = prev + 1; m < min (i + j, n); m++) 
     {
