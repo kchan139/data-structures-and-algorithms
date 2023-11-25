@@ -1,31 +1,34 @@
 template<class T>
 int Heap<T>::getItem(T item) 
 {
-    for (int i = 0; i < count; ++i)
+    for (int i = 0; i < count; i++)
         if (elements[i] == item)
             return i;
-    
+
     return -1;
 }
 
-template<class T>
+template<class T> 
 void Heap<T>::remove(T item) 
 {
-    int itemIndex = getItem(item);
+    int index = getItem(item);
 
-    if (itemIndex == -1)
+    if (index == -1)
         return;
 
-    swap(elements[itemIndex], elements[--count]);
+    elements[index] = elements[count-1];
 
-    reheapDown(itemIndex);
+    if (index < count-1)
+        reheapDown(index);
+
+    if (index > 0)
+        reheapUp(index);
+
+    count--;
 }
 
 template<class T>
 void Heap<T>::clear() 
 {
-    delete[] elements;
-    capacity = 10;
     count = 0;
-    elements = new T[capacity];
 }
