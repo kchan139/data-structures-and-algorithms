@@ -1,24 +1,20 @@
-int maxSum (int* nums,int& n,int& k, int index = 0, int sum = 0)
-{
-    int &Maxsum = -10e8;
-    if(index < n)
-    {
-        int Max = -10e8;
-        int m = -10e8;
-        for (int i = 0; i < k; i++)
-        {
-            if(index + i > n) return;
-            Max = max (Max, nums[index + i]);
-
-            if (Max * (i + 1) < m) 
-                m = max (m, Max * (i + 1));
-            else 
-                Sum (nums, n, k, index + i + 1, sum + Max * (i+1));
+int maxSum(int* nums, int n, int k) {
+   int dp[n] = {0};
+    
+    for (int i = 0; i < n; ++i) {
+        int maxElement = nums[i];
+        
+        for (int j = 1; j <= k && i - j + 1 >= 0; ++j) {
+            maxElement = max(maxElement, nums[i - j + 1]);
+            int currentS = maxElement * j;
             
+            if (i - j >= 0) {
+                dp[i] = max(dp[i], dp[i - j] + currentS);
+            } else {
+                dp[i] = max(dp[i], currentS);
+            }
         }
     }
-    else if(index == n)
-        Maxsum = max(Maxsum,sum);
 
-    return Maxsum;
+    return dp[n - 1];
 }

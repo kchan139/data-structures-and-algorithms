@@ -1,19 +1,22 @@
-void reduceDuplicate(Node* root)
+void reduceDuplicate(Node* root) 
 {
-    if(root && root->getNext() == NULL) 
+    if (!root || !root->getNext())
         return;
 
-    Node* curr = root->getNext(),* prev = root;
-    while(curr)
+    Node* prev = root;
+    Node* curr = root->getNext();
+
+    while (curr != nullptr)
     {
-        if(curr->getData() == prev->getData())
+        if (curr->getData() == prev->getData()) 
         {
             prev->setNext(curr->getNext());
+            delete curr;
             curr = prev->getNext();
-        }
-        else
+        } 
+        else 
         {
-            prev->setNext(curr);
+            prev = curr;
             curr = curr->getNext();
         }
     }
