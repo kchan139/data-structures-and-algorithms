@@ -1,16 +1,28 @@
-bool recursiveParentheses(const string &L, int index = 0, int balance = 0) {
-    /* to check if the string L includes balanced parentheses or not */
-    
+bool helper(const string& L, int index, Stack<char>* stack) 
+{
     int len = L.length();
-    if (index == len) return balance == 0;
+    if (index == len)
+        return stack->length() == 0;
 
-    if (balance < 0) return false;
+    char c = L[index];
 
-    if (L[index] == '(')
-        return recursiveParentheses(L, index + 1, balance + 1);
-    else if (L[index] == ')') 
-        return recursiveParentheses(L, index + 1, balance - 1);
-    else
-        return recursiveParentheses(L, index + 1, balance);
+    if (c == '(')
+        stack->push(c);
+    else if (c == ')') 
+    {
+        if (stack->length() == 0 || stack->topValue() != '(')
+            return false;
+        
+        stack->pop();
+    }
+
+    return helper(L, index + 1, stack);
 }
-    
+
+bool recursiveParentheses(const string& L) 
+{
+    Stack<char>* stack = new AStack<char>;
+    bool result = helper(L, 0, stack);
+    delete stack;
+    return result;
+}
