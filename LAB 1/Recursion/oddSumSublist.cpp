@@ -1,23 +1,25 @@
-int oddSumSublist(vector<int>& nums, int m) {
-    int oddCount = 0, evenCount = 1;
-    int currentSum = 0;
-    int result = 0;
+int helper(const vector<int>& nums, int index, int oddCount, int evenCount, int currentSum, int result, int m) 
+{
+    if (index == nums.size())
+        return result;
 
-    for (int num : nums) 
+    currentSum += nums[index];
+
+    if (currentSum % 2 != 0) 
     {
-        currentSum += num;
-        
-        if (currentSum % 2 != 0) 
-        {
-            result = (result + evenCount) % m;
-            oddCount++;
-        } 
-        else 
-        {
-            result = (result + oddCount) % m;
-            evenCount++;
-        }
+        result = (result + evenCount) % m;
+        oddCount++;
+    } 
+    else 
+    {
+        result = (result + oddCount) % m;
+        evenCount++;
     }
-    
-    return result;
+
+    return helper(nums, index + 1, oddCount, evenCount, currentSum, result, m);
+}
+
+int oddSumSublist(vector<int>& nums, int m) 
+{
+    return helper(nums, 0, 0, 1, 0, 0, m);
 }
