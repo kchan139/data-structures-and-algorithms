@@ -7,11 +7,11 @@ int mountainWithoutValley(vector<int>& nums) {
 
     // Build the left side of the mountain
     for (int i = 0; i < n; ++i) {
-        if (s.empty()) {
+        if (s.empty())
             mt[i] = nums[i]; // start the mountain
-        } else {
+        else
             mt[i] = min(nums[i], mt[s.top()] + 1); // increment the mountain up, but stay under the bound of nums[i]
-        }
+
         s.push(i); // push current index onto stack
     }
 
@@ -20,19 +20,18 @@ int mountainWithoutValley(vector<int>& nums) {
 
     // Adjust the right side of the mountain (descending side)
     for (int i = n - 1; i >= 0; --i) {
-        if (s.empty()) {
+        if (s.empty())
             mt[i] = min(mt[i], nums[i]); // adjust within bounds
-        } else {
+        else
             mt[i] = min(mt[i], mt[s.top()] + 1); // ensure no valleys
-        }
+
         s.push(i); // push current index onto stack
     }
 
     // Calculate the maximum sum of mt
     int sum = 0;
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i)
         sum += mt[i];
-    }
 
     return sum;
 }
