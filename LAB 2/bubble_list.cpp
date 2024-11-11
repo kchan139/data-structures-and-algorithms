@@ -1,20 +1,15 @@
 template <class T>
-void SLinkedList<T>::bubbleSort()
-{
-    if (head == nullptr) return;
-    
-    bool swapped;
-    do {
-        swapped = false;
-        Node * current = head;
-        while (current->next != nullptr) {
-            if (current->data > current->next->data) {
-                swap(current->data, current->next->data);
-                swapped = true;
-            }
-            current = current->next;
+void SLinkedList<T>::bubbleSort() {
+    for (int curr = count - 1; curr > 0; curr--) {
+        Node * currNode = head;
+        
+        for (int step = 0; step < curr; step++) {
+            if (currNode->data > currNode->next->data)
+                swap(currNode->data, currNode->next->data);
+                
+            currNode = currNode->next;
         }
-        if (swapped) printList();
-    } 
-    while (swapped);
+        
+        this->printList();
+    }
 }
